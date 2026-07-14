@@ -12,8 +12,9 @@ contract DeploySANT is Script {
 
         vm.startBroadcast();
 
-        SANT sant =
-            new SANT(address(0x8d7050a29C112638F0c9E0F103F3C498C2Bd948b), initialSupplyToMint);
+        SANT sant = new SANT(
+            msg.sender, address(0x9Da6C69815A2b9FFe7eE08A0be00EF181881Ad71), initialSupplyToMint
+        );
 
         vm.stopBroadcast();
 
