@@ -15,7 +15,7 @@ contract SANT is ERC20, ERC20Permit, AccessControl {
     // Max supply hardcap: 1 Billion $SANT (1,000,000,000 * 10^18)
     uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10 ** 18;
 
-    // Define the specific role needed to mint tokens
+    // Define the specific role needed to mint tokens.
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     error SANT__ExceedsMaxSupply(uint256 requested, uint256 maxAllowed);
