@@ -9,22 +9,28 @@ contract SANTTest is Test {
     using MessageHashUtils for bytes32;
     SANT public sant;
 
-    address public owner = address(0x1);
+    // Defined Roles matching SANT.sol
+    bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+
+    // Test Addresses
+    address public admin = address(0x1);
+    address public minter = address(0x4); // Dedicated backend minter wallet
     address public user1 = address(0x2);
     address public user2 = address(0x3);
 
     uint256 public constant INITIAL_MINT = 100_000_000 * 10 ** 18;
     uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10 ** 18;
 
-    // Error definitions to test Custom Error Selectors
+    // Error definitions to test AccessControl Custom Error Selectors
     error SANT__ExceedsMaxSupply(uint256 requested, uint256 maxAllowed);
     error SANT__InvalidMintRecipient();
-    error OwnableUnauthorizedAccount(address account);
+    error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
 
     function setUp() public {
-        // Deploy the contract with 100M minted to owner
-        vm.prank(owner);
-        sant = new SANT(owner, INITIAL_MINT);
+        // Deploy the contract with admin, minter, and 100M minted to admin
+        vm.prank(admin);
+        sant = new SANT(admin, minter, INITIAL_MINT);
     }
 
     /* ---------------- Initial State Tests ---------------- */
@@ -32,27 +38,34 @@ contract SANTTest is Test {
     function test_InitialSetup() public view {
         assertEq(sant.name(), "Salva Nexus Token");
         assertEq(sant.symbol(), "SANT");
-        assertEq(sant.owner(), owner);
         assertEq(sant.totalSupply(), INITIAL_MINT);
-        assertEq(sant.balanceOf(owner), INITIAL_MINT);
+        assertEq(sant.balanceOf(admin), INITIAL_MINT);
+
+        // Assert Role Configuration
+        assertTrue(sant.hasRole(DEFAULT_ADMIN_ROLE, admin));
+        assertTrue(sant.hasRole(MINTER_ROLE, minter));
+        assertFalse(sant.hasRole(MINTER_ROLE, user1));
     }
 
-    /* ---------------- Minting & Custom Errors ---------------- */
+    /* ---------------- Minting & Access Control ---------------- */
 
-    function test_OwnerCanMint() public {
+    function test_MinterCanMint() public {
         uint256 mintAmount = 50_000 * 10 ** 18;
 
-        vm.prank(owner);
+        vm.prank(minter);
         sant.mint(user1, mintAmount);
 
         assertEq(sant.balanceOf(user1), mintAmount);
         assertEq(sant.totalSupply(), INITIAL_MINT + mintAmount);
     }
 
-    function test_NonOwnerCannotMint() public {
+    function test_NonMinterCannotMint() public {
         vm.prank(user1);
-        // Expecting OpenZeppelin's custom ownable error
-        vm.expectRevert(abi.encodeWithSelector(OwnableUnauthorizedAccount.selector, user1));
+
+        // Expecting OpenZeppelin's custom AccessControl unauthorized error
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, user1, MINTER_ROLE)
+        );
         sant.mint(user1, 1000 * 10 ** 18);
     }
 
@@ -60,7 +73,7 @@ contract SANTTest is Test {
         // Attempting to mint over the remaining 900M supply
         uint256 excessMint = (MAX_SUPPLY - INITIAL_MINT) + 1;
 
-        vm.prank(owner);
+        vm.prank(minter);
         vm.expectRevert(
             abi.encodeWithSelector(
                 SANT__ExceedsMaxSupply.selector, INITIAL_MINT + excessMint, MAX_SUPPLY
@@ -70,7 +83,7 @@ contract SANTTest is Test {
     }
 
     function test_CannotMintToZeroAddress() public {
-        vm.prank(owner);
+        vm.prank(minter);
         vm.expectRevert(SANT__InvalidMintRecipient.selector);
         sant.mint(address(0), 100 * 10 ** 18);
     }
@@ -82,8 +95,8 @@ contract SANTTest is Test {
         uint256 privateKey = 0xA11CE;
         address alice = vm.addr(privateKey);
 
-        // Fund Alice with some SANT first
-        vm.prank(owner);
+        // Fund Alice with some SANT first (from admin's initial mint)
+        vm.prank(admin);
         sant.transfer(alice, 1000 * 10 ** 18);
 
         uint256 value = 500 * 10 ** 18;

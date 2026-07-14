@@ -12,11 +12,12 @@ contract DeploySANT is Script {
 
         vm.startBroadcast();
 
-        SANT sant = new SANT(msg.sender, initialSupplyToMint);
+        SANT sant =
+            new SANT(address(0x8d7050a29C112638F0c9E0F103F3C498C2Bd948b), initialSupplyToMint);
 
         vm.stopBroadcast();
 
-        console.log("SANT deployed at:", address(sant));
+        console.log("$SANT deployed at:", address(sant));
         console.log("Initial Owner:", msg.sender);
         console.log("Total Supply minted:", sant.totalSupply() / 10 ** 18, "SANT");
 
