@@ -7,7 +7,7 @@ import { console } from "forge-std/console.sol";
 
 contract DeploySANT is Script {
     function run() external returns (SANT) {
-        // Let's mint 500 Million $SANT to the owner on deployment
+        // Let's mint 500 Million $SANT to the owner on deployment.
         uint256 initialSupplyToMint = 500_000_000 * 10 ** 18;
 
         vm.startBroadcast();
