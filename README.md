@@ -8,22 +8,23 @@ Unlike traditional token launches, **$SANT is designed to be earned through real
 
 ## Vision
 
-Salva Nexus is building payment infrastructure that makes stablecoin transfers and p2p exchange feels seamless.
+Salva Nexus is building payment infrastructure that makes stablecoin transfers and P2P exchange feel seamless.
 
 The long-term vision is simple:
 
 > **Use the network. Earn the network.**
 
-As users make transfers, perform swaps, receive payments, and contribute liquidity, they earn **$SANT**, representing participation in the ecosystem. Once the network matures, $SANT holders will be able to stake their tokens and earn a share of protocol-generated revenue.
+As users make transfers, perform swaps, receive payments, and contribute liquidity, they earn **$SANT**, representing participation in the ecosystem. As the network matures, $SANT holders will be able to stake their tokens and earn a share of protocol-generated revenue.
 
 ---
 
 ## Features
 
-- ERC-20 compliant token
+- ERC-20 compliant
 - EIP-2612 Permit (gasless approvals)
-- Owner-controlled minting
+- Role-based minting
 - Hard capped supply of **1,000,000,000 SANT**
+- Built with OpenZeppelin Contracts
 
 ---
 
@@ -36,17 +37,33 @@ As users make transfers, perform swaps, receive payments, and contribute liquidi
 | Decimals | 18 |
 | Standard | ERC-20 |
 | Permit | EIP-2612 |
-| Max Supply | 1,000,000,000 SANT |
+| Maximum Supply | 1,000,000,000 SANT |
+
+---
+
+## Deployments
+
+### Base Mainnet
+
+| Contract | Address |
+|----------|---------|
+| SANT | `0xdC6790528ea33D61C573F0Ae9317773621B23D18` |
+
+### Base Sepolia
+
+| Contract | Address |
+|----------|---------|
+| SANT | `0x7ED077E471E9895061F2bbe8E4D00396E7236DBe` |
 
 ---
 
 ## Utility
 
-$SANT is designed to become the economic layer of the Salva ecosystem.
+$SANT serves as the economic layer of the Salva ecosystem.
 
 Planned utilities include:
 
-- Network participation rewards
+- Mining rewards for network usage
 - Protocol staking
 - Revenue sharing from protocol fees
 - Ecosystem incentives
@@ -60,31 +77,31 @@ Salva follows a simple principle:
 
 > **Real usage should create real ownership.**
 
-Instead of rewarding speculation, the protocol is designed to reward users who actively contribute to network growth.
+Instead of rewarding speculation, the protocol rewards users who actively contribute to network growth.
 
-Examples of rewardable actions may include:
+Examples of rewardable actions include:
 
 - Sending stablecoins
 - Receiving stablecoins
 - Swapping assets
 - Providing liquidity
-- Using Salva services
+- Using Salva ecosystem services
 
-The reward mechanism operates separately from this token contract.
+The reward engine operates independently of this ERC-20 contract.
 
 ---
 
 ## Revenue Sharing
 
-As the Salva payment network grows, a percentage of protocol-generated fees is intended to be distributed to **staked SANT holders**.
+As the Salva payment network grows, a percentage of protocol-generated fees will be distributed to **staked SANT holders**.
 
-The objective is to create sustainable, real yield backed by actual payment.
+The objective is to create sustainable, real yield backed by actual payment activities.
 
 ---
 
-## Smart Contract
+## Smart Contract Scope
 
-This repository contains only the **ERC-20 implementation** of the Salva Nexus Token.
+This repository contains only the ERC-20 implementation of the Salva Nexus Token.
 
 Responsibilities include:
 
@@ -93,23 +110,16 @@ Responsibilities include:
 - Minting
 - Permit approvals
 
-Reward emissions, mining logic, staking contracts, and protocol mechanics are implemented independently.
+The following systems are intentionally implemented outside of this contract:
 
----
+- Mining engine
+- Reward distribution
+- Staking
+- Fee sharing
+- Treasury management
+- Salva Wallet integration
 
-## Security
-
-The token contract intentionally remains simple.
-
-Complex business logic such as:
-
-- reward emissions,
-- fee distribution,
-- staking,
-- mining,
-- treasury management,
-
-is implemented outside of the token contract to minimize attack surface and improve auditability.
+Keeping the token contract simple improves security, auditability, and long-term maintainability.
 
 ---
 
@@ -117,10 +127,10 @@ is implemented outside of the token contract to minimize attack surface and impr
 
 $SANT is a utility token designed for participation within the Salva ecosystem.
 
-Owning $SANT does **not** represent ownership of Salva Labs or equity in any legal entity. Rights and utilities associated with the token are defined solely by the deployed protocol and supporting smart contracts.
+Ownership of $SANT does **not** represent equity, shares, or ownership in Salva Labs or any legal entity. Rights and utilities associated with the token are defined solely by the deployed smart contracts and protocol.
 
 ---
 
 ## License
 
-MIT
+Licensed under the MIT License.
