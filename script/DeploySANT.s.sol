@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30;
 
-import { SANT } from "../src/SANT.sol";
+import { SANT } from "../src/Sant.sol";
 import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
 
