@@ -47,7 +47,7 @@ As users make transfers, perform swaps, receive payments, and contribute liquidi
 
 | Contract | Address |
 |----------|---------|
-| SANT | `0xdC6790528ea33D61C573F0Ae9317773621B23D18` |
+| SANT | `0xCf1F78A58270cE1fE1239e475E8e767348377400` |
 
 ### Base Sepolia
 
