@@ -1,37 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.30;
 
-import { SANT } from "../src/Sant.sol";
+import { SANTTestSetup } from "../SANTTestSetup.t.sol";
 import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
-import { Test, console } from "forge-std/Test.sol";
 
-contract SANTTest is Test {
+contract Sant is SANTTestSetup {
     using MessageHashUtils for bytes32;
-    SANT public sant;
-
-    // Defined Roles matching SANT.sol
-    bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-
-    // Test Addresses
-    address public admin = address(0x1);
-    address public minter = address(0x4); // Dedicated backend minter wallet
-    address public user1 = address(0x2);
-    address public user2 = address(0x3);
-
-    uint256 public constant INITIAL_MINT = 100_000_000 * 10 ** 18;
-    uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10 ** 18;
-
-    // Error definitions to test AccessControl Custom Error Selectors
-    error SANT__ExceedsMaxSupply(uint256 requested, uint256 maxAllowed);
-    error SANT__InvalidMintRecipient();
-    error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
-
-    function setUp() public {
-        // Deploy the contract with admin, minter, and 100M minted to admin
-        vm.prank(admin);
-        sant = new SANT(admin, minter, INITIAL_MINT);
-    }
 
     /* ---------------- Initial State Tests ---------------- */
 
@@ -39,7 +13,9 @@ contract SANTTest is Test {
         assertEq(sant.name(), "Salva Nexus Token");
         assertEq(sant.symbol(), "SANT");
         assertEq(sant.totalSupply(), INITIAL_MINT);
-        assertEq(sant.balanceOf(admin), INITIAL_MINT);
+        assertEq(sant.balanceOf(admin), INITIAL_MINT - INITIAL_DEPOSIT);
+        assertEq(santVault.exchangeRate(), 1e18);
+        assertEq(santVault.previewWithdrawAll(admin), 1000e18);
 
         // Assert Role Configuration
         assertTrue(sant.hasRole(DEFAULT_ADMIN_ROLE, admin));

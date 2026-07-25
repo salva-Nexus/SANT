@@ -1,1 +1,7 @@
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+@Errors=src/Base/
+@Storage=src/Base/
+@Context=src/Base/
+@Modifiers=src/VaultHelpers/
+@VaultData=src/VaultHelpers/
+@SantVault=src/
