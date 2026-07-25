@@ -52,8 +52,7 @@ contract SantVault is VaultData {
 
         if (staker.svtBalance < svtToBurn) revert Errors__InsufficientSVT();
 
-        uint256 timeElapsed = block.timestamp - staker.depositTimestamp;
-        if (timeElapsed < WITHDRAWAL_COOLDOWN) revert Errors__CooldownNotElapsed();
+        if (!canWithdraw(sender)) revert Errors__CooldownNotElapsed();
 
         uint256 santOut = _calculateSantOut(svtToBurn);
 

@@ -84,4 +84,9 @@ abstract contract VaultData is Modifiers {
         uint256 timeShift = (timeElapsed * svtMinted) / totalSvtAfter;
         newTimestamp = oldTimestamp + timeShift;
     }
+
+    function canWithdraw(address user) public view returns (bool) {
+        bool cooldownDone = block.timestamp - _stakers[user].depositTimestamp >= WITHDRAWAL_COOLDOWN;
+        return cooldownDone;
+    }
 }
